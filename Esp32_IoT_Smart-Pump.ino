@@ -46,3 +46,30 @@ void setup()
 void loop() {
   BlynkEdgent.run();
 }
+
+/*
+   Control relay using Blynk Virtual Pins
+   This special function is called BLYNK_WRITE. Think of it
+   as meaning that the Blynk.Cloud is telling your hardware
+   “there a new value written to your virtual pin”.
+*/
+BLYNK_WRITE(V1) {
+  digitalWrite(RELAY_OUTPUT_1, !param.asInt());
+  prev_state_switch_1 = !param.asInt();
+
+#ifdef APP_DEBUG
+  Serial.print("Virtual Pin 1 Changed to: ");
+  Serial.println(param.asInt() ? "ON" : "OFF");
+#endif
+}
+
+/*
+   Request the latest state from Cloud
+   Requests all latest stored values for all widgets. All
+   analog/digital/virtual pin values and states will be
+   set to the latest stored value. Every virtual pin will
+   generate BLYNK_WRITE() event.
+*/
+BLYNK_CONNECTED() {
+  Blynk.syncAll();
+}

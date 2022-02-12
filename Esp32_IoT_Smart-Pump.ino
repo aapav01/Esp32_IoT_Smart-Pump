@@ -31,6 +31,7 @@ void setup()
   pinMode(SWITCH_INPUT_2, INPUT_PULLUP);
   pinMode(RELAY_OUTPUT_1, OUTPUT);
   digitalWrite(RELAY_OUTPUT_1, HIGH);
+  Blynk.virtualWrite(V0, false);
 }
 
 void loop() {

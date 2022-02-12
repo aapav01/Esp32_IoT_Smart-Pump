@@ -16,12 +16,21 @@
 
 #include "BlynkEdgent.h"
 
+#define SWITCH_INPUT_1 27
+#define SWITCH_INPUT_2 4
+#define RELAY_OUTPUT_1 26
+
 void setup()
 {
   Serial.begin(115200);
   delay(100);
 
   BlynkEdgent.begin();
+
+  pinMode(SWITCH_INPUT_1, INPUT_PULLUP);
+  pinMode(SWITCH_INPUT_2, INPUT_PULLUP);
+  pinMode(RELAY_OUTPUT_1, OUTPUT);
+  digitalWrite(RELAY_OUTPUT_1, HIGH);
 }
 
 void loop() {

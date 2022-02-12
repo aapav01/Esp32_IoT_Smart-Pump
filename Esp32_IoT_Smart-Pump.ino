@@ -3,7 +3,7 @@
 #define BLYNK_TEMPLATE_ID "TMPLl6ycCMT5"
 #define BLYNK_DEVICE_NAME "IoT Pump"
 
-#define BLYNK_FIRMWARE_VERSION        "0.1.0"
+#define BLYNK_FIRMWARE_VERSION        "0.1.1"
 
 #define BLYNK_PRINT Serial
 //#define BLYNK_DEBUG

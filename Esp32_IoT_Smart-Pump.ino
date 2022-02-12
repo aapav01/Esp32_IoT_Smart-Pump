@@ -45,6 +45,38 @@ void setup()
 
 void loop() {
   BlynkEdgent.run();
+
+  bool switchState_1 = digitalRead(SWITCH_INPUT_1);
+  bool tankFull = digitalRead(SWITCH_INPUT_2);
+
+  // Toggle The Pump if its on and off if its on.
+  if (switchState_1 == LOW && tankFull == HIGH) {
+    Serial.print("Switch 1 : ");
+    prev_state_switch_1 = !prev_state_switch_1;
+    pump_was_on = !pump_was_on;
+    Serial.println(!prev_state_switch_1 ? "ON" : "OFF");
+    digitalWrite(RELAY_OUTPUT_1, prev_state_switch_1);
+    Blynk.virtualWrite(V1, !prev_state_switch_1);
+    delay(1000);
+  }
+  // Check Tank is Full and Update the Cloud about the State and Turn off the Pump
+  if (tankFull == LOW && BlynkState::get() != MODE_TANK_FULL) {
+    Serial.println("Tank Full");
+    prev_state_switch_1 = CLOSE;
+    pump_was_on = true;
+    digitalWrite(RELAY_OUTPUT_1, prev_state_switch_1);
+    Blynk.virtualWrite(V1, !prev_state_switch_1); \
+    Blynk.virtualWrite(V0, true);
+    delay(1000);
+  }
+  // When Tank was full but its not anymore And also pump was running before
+  // We will reset the virtual pin to false to tell the tank is not full.
+  // And Device is ready to accept command
+  // TODO: Check Cloud Connection
+  if (tankFull == HIGH && pump_was_on == true) {
+    Blynk.virtualWrite(V0, false);
+    pump_was_on = false;
+  }
 }
 
 /*

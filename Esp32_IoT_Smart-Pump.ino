@@ -20,6 +20,15 @@
 #define SWITCH_INPUT_2 4
 #define RELAY_OUTPUT_1 26
 
+#define CLOSE 1
+#define OPEN 0
+
+/*
+   Previous State
+*/
+bool prev_state_switch_1 = CLOSE;
+bool pump_was_on = false;
+
 void setup()
 {
   Serial.begin(115200);

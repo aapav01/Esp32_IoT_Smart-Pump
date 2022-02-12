@@ -9,6 +9,10 @@ enum State {
   MODE_SWITCH_TO_STA,
   MODE_RESET_CONFIG,
   MODE_ERROR,
+  // custom state
+  MODE_PUMP_ON,
+  MODE_PUMP_OFF,
+  MODE_TANK_FULL,
 
   MODE_MAX_VALUE
 };
@@ -24,6 +28,9 @@ const char* StateStr[MODE_MAX_VALUE+1] = {
   "SWITCH_TO_STA",
   "RESET_CONFIG",
   "ERROR",
+  "PUMP_ON",
+  "PUMP_OFF",
+  "TANK_FULL",
 
   "INIT"
 };

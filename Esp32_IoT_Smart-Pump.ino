@@ -57,6 +57,10 @@ void loop() {
     Serial.println(!prev_state_switch_1 ? "ON" : "OFF");
     digitalWrite(RELAY_OUTPUT_1, prev_state_switch_1);
     Blynk.virtualWrite(V1, !prev_state_switch_1);
+    if (!prev_state_switch_1)
+      BlynkState::set(MODE_PUMP_ON);
+    else
+      BlynkState::set(MODE_PUMP_OFF);
     delay(1000);
   }
   // Check Tank is Full and Update the Cloud about the State and Turn off the Pump
@@ -68,14 +72,22 @@ void loop() {
     Blynk.virtualWrite(V1, !prev_state_switch_1); \
     Blynk.virtualWrite(V0, true);
     delay(1000);
+    BlynkState::set(MODE_TANK_FULL);
   }
   // When Tank was full but its not anymore And also pump was running before
   // We will reset the virtual pin to false to tell the tank is not full.
   // And Device is ready to accept command
-  // TODO: Check Cloud Connection
   if (tankFull == HIGH && pump_was_on == true) {
     Blynk.virtualWrite(V0, false);
     pump_was_on = false;
+    if (BlynkState::get() == MODE_TANK_FULL) {
+      if (Blynk.connected())
+        BlynkState::set(MODE_RUNNING);
+      else if (WiFi.status() == WL_CONNECTED)
+        BlynkState::set(MODE_CONNECTING_CLOUD);
+      else
+        BlynkState::set(MODE_CONNECTING_NET);
+    }
   }
 }
 
@@ -88,6 +100,10 @@ void loop() {
 BLYNK_WRITE(V1) {
   digitalWrite(RELAY_OUTPUT_1, !param.asInt());
   prev_state_switch_1 = !param.asInt();
+  if (!prev_state_switch_1)
+    BlynkState::set(MODE_PUMP_ON);
+  else
+    BlynkState::set(MODE_PUMP_OFF);
 
 #ifdef APP_DEBUG
   Serial.print("Virtual Pin 1 Changed to: ");

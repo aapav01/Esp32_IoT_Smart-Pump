@@ -26,7 +26,7 @@ public:
     COLOR_BLACK   = RGB(0x00, 0x00, 0x00),
     COLOR_WHITE   = RGB(0xFF, 0xFF, 0xE7),
     COLOR_BLUE    = RGB(0x0D, 0x36, 0xFF),
-    COLOR_BLYNK   = RGB(0x2E, 0xFF, 0xB9),
+    COLOR_BLYNK   = RGB(0x2E, 0xFF, 0x00),
     COLOR_RED     = RGB(0xFF, 0x10, 0x08),
     COLOR_MAGENTA = RGB(0xA7, 0x00, 0xFF),
   };
@@ -60,6 +60,9 @@ public:
     case MODE_CONNECTING_CLOUD:  return beatLED(COLOR_BLYNK,   (int[]){ 100, 100 });
     case MODE_RUNNING:           return waveLED(COLOR_BLYNK,   5000);
     case MODE_OTA_UPGRADE:       return beatLED(COLOR_MAGENTA, (int[]){ 50, 50 });
+    case MODE_PUMP_ON:           return waveLED(COLOR_MAGENTA, 5000);
+    case MODE_PUMP_OFF:          return beatLED(COLOR_MAGENTA, (int[]){ 200, 200 });
+    case MODE_TANK_FULL:         return waveLED(COLOR_WHITE,   5000);
     default:                     return beatLED(COLOR_RED,     (int[]){ 80, 100, 80, 1000 } );
     }
   }
